@@ -69,12 +69,20 @@ body{
   font-family:var(--font);
   background:var(--bg);
   color:var(--text);
-  height:100vh;
-  overflow:hidden;
+  min-height:100vh;
+  height:auto;
+  overflow-y:auto;
+  overflow-x:hidden;
   font-size:13px;
   line-height:1.5;
   transition:background var(--transition),color var(--transition);
 }
+
+@media (max-width: 900px) {
+  .app, .screen { min-height:100vh; }
+  .content { padding-bottom: 80px; }
+}
+
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--dim);border-radius:4px}
@@ -87,9 +95,11 @@ body{
 
 /* ══════════════ LOGIN ══════════════ */
 .login-wrap{
-  height:100vh;display:flex;align-items:center;justify-content:center;
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
   background:var(--bg);
-  position:relative;overflow:hidden;
+  position:relative;overflow-y:auto;
+  overflow-x:hidden;
+  padding:20px 0;
 }
 .login-pattern{
   position:absolute;inset:0;
