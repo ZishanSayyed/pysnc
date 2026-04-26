@@ -142,9 +142,27 @@ curl -X POST http://127.0.0.1:8000/api/auth/users/create/ \
 
 * `school = request.school`
 
----
 
+➕ 4.1 Create Bulk User
+
+```bash
+
+curl -X POST http://localhost:8000/api/auth/users/bulk-upload/ \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -F "file=@users.csv"
+
+
+```
 ## ✏️ 5. Update User
+
+```bash
+curl -X PUT http://127.0.0.1:8000/api/auth/users/2/ \
+-H "Authorization: Bearer YOUR_TOKEN" \
+-H "Content-Type: application/json" \
+-d "{\"role\":\"management\"}"
+```
+
+## ✏️ 5.1 Update Bulk User
 
 ```bash
 curl -X PUT http://127.0.0.1:8000/api/auth/users/2/ \

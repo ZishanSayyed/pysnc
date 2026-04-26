@@ -1,10 +1,11 @@
 from rest_framework import serializers
 from .models import SchoolUser
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = SchoolUser
-        fields = ['id', 'username', 'email', 'role', 'phone', 'school']
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'role', 'phone', 'school', 'global_id']
 
 
 class CreateUserSerializer(serializers.ModelSerializer):
@@ -12,7 +13,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SchoolUser
-        fields = ['username', 'email', 'password', 'role', 'phone']
+        fields = ['username', 'first_name', 'last_name', 'email', 'password', 'role', 'phone']
 
     def create(self, validated_data):
         request = self.context['request']
@@ -24,6 +25,10 @@ class CreateUserSerializer(serializers.ModelSerializer):
             password=validated_data['password'],
             role=validated_data['role'],
             phone=validated_data.get('phone'),
+            first_name=validated_data.get('first_name', ''),
+            last_name=validated_data.get('last_name', ''),
             school=school
         )
+        # Signal (accounts/signals.py) will auto-create the matching
+        # Student / Teacher / Parent profile row.
         return user
