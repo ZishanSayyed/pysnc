@@ -287,7 +287,54 @@ curl -X POST http://127.0.0.1:8000/api/students/bulk-upload/ \
   ]
 }
 ```
+---
+# Class Module 
 
+# 1. Create Class 10
+```
+curl -X POST http://127.0.0.1:8000/api/classes/ \
+  -H "Authorization: Bearer MGMT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "X-School-Slug: greenwood" \
+  -d '{"name": "Class 10", "section": "A", "academic_year": "2025-26", "capacity": 40}'
+
+```
+# 2. Add subjects to Class 10 (repeat for each subject id)
+```
+curl -X POST http://127.0.0.1:8000/api/classes/1/add-subject/ \
+  -H "Authorization: Bearer MGMT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "X-School-Slug: greenwood" \
+  -d '{"subject_id": 1}'
+
+```
+# 3. Assign student → auto-enrolled in all subjects above
+```
+curl -X POST http://127.0.0.1:8000/api/classes/1/assign-student/ \
+  -H "Authorization: Bearer MGMT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "X-School-Slug: greenwood" \
+  -d '{"student_id": 25}'
+
+```
+# 4. Check student's enrollments
+```
+curl -X GET "http://127.0.0.1:8000/api/classes/enrollments/?student_id=25" \
+  -H "Authorization: Bearer MGMT_TOKEN" \
+  -H "X-School-Slug: greenwood"
+
+```
+# 5. Uncheck one subject for this student (is_active=false)
+
+```
+curl -X PATCH http://127.0.0.1:8000/api/classes/enrollments/3/ \
+  -H "Authorization: Bearer MGMT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "X-School-Slug: greenwood" \
+  -d '{"is_active": false}'
+```
+
+---
 ---
 
 # 🔁 Complete Flow

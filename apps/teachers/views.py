@@ -18,7 +18,37 @@ class SubjectViewSet(viewsets.ModelViewSet):
         if self.action in ['list', 'retrieve']:
             return [IsManagementOrTeacher()]
         return [IsManagement()]
+    @action(detail=False, methods=['post'], url_path='bulk-create')
+    def bulk_create(self, request):
+        """
+        Create multiple subjects at once.
+        Body: [{"name": "...", "code": "..."}, ...]
+        Skips duplicates, reports errors per item.
+        """
+        data = request.data
+        if not isinstance(data, list):
+            return Response({'error': 'Expected a list of subjects'}, status=status.HTTP_400_BAD_REQUEST)
 
+        created = []
+        errors  = []
+
+        for i, item in enumerate(data):
+            serializer = SubjectSerializer(data=item)
+            if serializer.is_valid():
+                try:
+                    subject = serializer.save()
+                    created.append({'id': subject.id, 'name': subject.name, 'code': subject.code})
+                except Exception as e:
+                    errors.append({'index': i, 'data': item, 'error': str(e)})
+            else:
+                errors.append({'index': i, 'data': item, 'error': serializer.errors})
+
+        return Response({
+            'created': len(created),
+            'errors': len(errors),
+            'created_subjects': created,
+            'error_details': errors
+        }, status=status.HTTP_201_CREATED)
 
 class TeacherViewSet(viewsets.ModelViewSet):
     """
