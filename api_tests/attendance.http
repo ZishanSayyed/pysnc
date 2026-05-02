@@ -1,0 +1,105 @@
+@baseUrl = http://127.0.0.1:8000
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc3NzM0NTMwLCJpYXQiOjE3Nzc3MzQyMzAsImp0aSI6IjY0MjM1YjczODc0NjQzZGU4OTllMTQ4M2VhMWY3YjExIiwidXNlcl9pZCI6IjEifQ.Cge2WTEZPP_srOOKiXQcPVhoXq0ktVODK63JsGmlVyY
+@school = greenwood
+
+### 🔹 1. List Attendance Sessions
+
+GET {{baseUrl}}/api/attendance/?class_id=1&date=2025-06-10
+Authorization: Bearer {{token}}
+X-School-Slug: {{school}}
+
+---
+
+### 🔹 2. Create Attendance (Daily)
+
+POST {{baseUrl}}/api/attendance/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+X-School-Slug: {{school}}
+
+{
+"class_obj": 1,
+"subject": null,
+"teacher": 1,
+"date": "2025-06-10",
+"session_type": "daily",
+"records": [
+{ "student": 24, "status": "present" },
+{ "student": 25, "status": "absent" }
+]
+}
+
+---
+
+### 🔹 3. Create Attendance (Subject-wise)
+
+POST {{baseUrl}}/api/attendance/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+X-School-Slug: {{school}}
+
+{
+"class_obj": 1,
+"subject": 1,
+"teacher": 1,
+"date": "2025-06-10",
+"session_type": "subject",
+"records": [
+{ "student": 1, "status": "present" },
+{ "student": 2, "status": "late" }
+]
+}
+
+---
+
+### 🔹 4. Get Session Detail
+
+GET {{baseUrl}}/api/attendance/1/
+Authorization: Bearer {{token}}
+X-School-Slug: {{school}}
+
+---
+
+### 🔹 5. Update Single Record
+
+PATCH {{baseUrl}}/api/attendance/1/records/2/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+X-School-Slug: {{school}}
+
+{
+"status": "present",
+"remarks": "Updated via API"
+}
+
+---
+
+### 🔹 6. Finalize Session
+
+POST {{baseUrl}}/api/attendance/1/finalize/
+Authorization: Bearer {{token}}
+X-School-Slug: {{school}}
+
+---
+
+### 🔹 7. Class Summary
+
+GET {{baseUrl}}/api/attendance/class-summary/?class_id=1&from_date=2025-06-01&to_date=2025-06-30
+Authorization: Bearer {{token}}
+X-School-Slug: {{school}}
+
+---
+
+### 🔹 8. Student Summary
+
+GET {{baseUrl}}/api/attendance/student/1/
+Authorization: Bearer {{token}}
+X-School-Slug: {{school}}
+
+---
+
+### 🔹 9. Bulk Status (Pre-fill)
+
+GET {{baseUrl}}/api/attendance/bulk-status/?class_id=1&date=2025-06-10
+Authorization: Bearer {{token}}
+X-School-Slug: {{school}}
