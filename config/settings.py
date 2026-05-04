@@ -25,6 +25,8 @@ INSTALLED_APPS = [
     'apps.students',
     'apps.teachers',
     'apps.attendance',
+    "apps.timetable",
+
 ]
 
 MIDDLEWARE = [
