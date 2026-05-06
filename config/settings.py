@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'apps.teachers',
     'apps.attendance',
     "apps.timetable",
+    "apps.grades"
 
 ]
 
